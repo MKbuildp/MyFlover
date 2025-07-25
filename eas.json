@@ -4,20 +4,22 @@
     "appVersionSource": "remote"
   },
   "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal"
-    },
-    "preview": {
-      "distribution": "internal"
-    },
     "production": {
       "ios": {
-        "resourceClass": "m-medium"
+        "resourceClass": "m-medium",
+        "distribution": "store",
+        "credentialsSource": "remote"
       }
     }
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "michal.kabelac@gmail.com",
+        "ascAppId": "6477357776",
+        "appleTeamId": "SJSQ65A7N8",
+        "language": "cs"
+      }
+    }
   }
 } 
