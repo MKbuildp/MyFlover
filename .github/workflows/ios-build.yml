@@ -1,10 +1,16 @@
 name: iOS Build
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build type'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - development
 
 jobs:
   build:
