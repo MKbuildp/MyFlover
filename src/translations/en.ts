@@ -21,10 +21,9 @@ export const en = {
     all: 'All',
     addNew: 'Add Category',
     delete: 'Delete Category',
-    edit: 'Edit Category',
     select: 'Select Categories',
     noCategories: 'No Categories',
-    createFirst: 'Please create at least one category in the Categories section first',
+    createFirst: 'First create at least one category in the Categories section',
   },
   recipe: {
     new: 'New Recipe',

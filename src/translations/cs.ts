@@ -21,7 +21,6 @@ export const cs = {
     all: 'Všechny',
     addNew: 'Přidat kategorii',
     delete: 'Smazat kategorii',
-    edit: 'Upravit kategorii',
     select: 'Vyberte kategorie',
     noCategories: 'Žádné kategorie',
     createFirst: 'Nejprve vytvořte alespoň jednu kategorii v sekci Kategorie',

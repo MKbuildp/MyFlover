@@ -10,23 +10,20 @@ import {
   Platform,
 } from 'react-native';
 import { useLanguage } from '../../../context/LanguageContext';
-import { Kategorie } from '../../../types/recept';
 
 interface KategorieModalProps {
   visible: boolean;
   onClose: () => void;
   onSave: (nazev: string) => void;
-  existujiciKategorie?: Kategorie;
 }
 
 export const KategorieModal: React.FC<KategorieModalProps> = ({
   visible,
   onClose,
   onSave,
-  existujiciKategorie,
 }) => {
   const { t } = useLanguage();
-  const [nazev, setNazev] = useState(existujiciKategorie?.nazev || '');
+  const [nazev, setNazev] = useState('');
 
   const handleSave = () => {
     if (nazev.trim()) {
@@ -36,12 +33,17 @@ export const KategorieModal: React.FC<KategorieModalProps> = ({
     }
   };
 
+  const handleClose = () => {
+    setNazev('');
+    onClose();
+  };
+
   return (
     <Modal
       visible={visible}
       animationType="slide"
       transparent={true}
-      onRequestClose={onClose}
+      onRequestClose={handleClose}
     >
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -49,7 +51,7 @@ export const KategorieModal: React.FC<KategorieModalProps> = ({
       >
         <View style={styles.modalView}>
           <Text style={styles.title}>
-            {existujiciKategorie ? t.categories.edit : t.categories.addNew}
+            {t.categories.addNew}
           </Text>
           
           <TextInput
@@ -63,7 +65,7 @@ export const KategorieModal: React.FC<KategorieModalProps> = ({
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={[styles.button, styles.buttonCancel]}
-              onPress={onClose}
+              onPress={handleClose}
             >
               <Text style={styles.buttonText}>{t.common.cancel}</Text>
             </TouchableOpacity>

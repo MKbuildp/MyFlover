@@ -14,9 +14,8 @@ type KategorieScreenNavigationProp = BottomTabNavigationProp<TabNavigatorParamLi
 
 export const KategorieScreen = () => {
   const { t } = useLanguage();
-  const { kategorie, pridatKategorii, upravitKategorii, smazatKategorii } = useRecepty();
+  const { kategorie, pridatKategorii, smazatKategorii } = useRecepty();
   const [modalVisible, setModalVisible] = useState(false);
-  const [editovanaKategorie, setEditovanaKategorie] = useState<Kategorie | undefined>();
   const route = useRoute<KategorieScreenRouteProp>();
   const navigation = useNavigation<KategorieScreenNavigationProp>();
 
@@ -29,13 +28,6 @@ export const KategorieScreen = () => {
 
   const handlePridatKategorii = (nazev: string) => {
     pridatKategorii(nazev);
-  };
-
-  const handleUpravitKategorii = (nazev: string) => {
-    if (editovanaKategorie) {
-      upravitKategorii({ ...editovanaKategorie, nazev });
-      setEditovanaKategorie(undefined);
-    }
   };
 
   const handleSmazatKategorii = (kategorie: Kategorie) => {
@@ -56,14 +48,8 @@ export const KategorieScreen = () => {
     );
   };
 
-  const otevritModalProEditaci = (kategorie: Kategorie) => {
-    setEditovanaKategorie(kategorie);
-    setModalVisible(true);
-  };
-
   const zavritModal = () => {
     setModalVisible(false);
-    setEditovanaKategorie(undefined);
   };
 
   return (
@@ -74,7 +60,6 @@ export const KategorieScreen = () => {
         renderItem={({ item }) => (
           <KategoriePolozka
             kategorie={item}
-            onEdit={() => otevritModalProEditaci(item)}
             onDelete={() => handleSmazatKategorii(item)}
           />
         )}
@@ -84,8 +69,7 @@ export const KategorieScreen = () => {
       <KategorieModal
         visible={modalVisible}
         onClose={zavritModal}
-        onSave={editovanaKategorie ? handleUpravitKategorii : handlePridatKategorii}
-        existujiciKategorie={editovanaKategorie}
+        onSave={handlePridatKategorii}
       />
     </View>
   );

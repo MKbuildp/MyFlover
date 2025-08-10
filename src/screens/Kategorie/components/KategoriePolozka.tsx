@@ -8,13 +8,11 @@ import { useLanguage } from '../../../context/LanguageContext';
 
 interface KategoriePolozkaProps {
   kategorie: Kategorie;
-  onEdit: () => void;
   onDelete: () => void;
 }
 
 export const KategoriePolozka: React.FC<KategoriePolozkaProps> = ({
   kategorie,
-  onEdit,
   onDelete,
 }) => {
   const { t } = useLanguage();
@@ -38,21 +36,12 @@ export const KategoriePolozka: React.FC<KategoriePolozkaProps> = ({
         </Text>
       </View>
 
-      <View style={styles.buttons}>
-        <TouchableOpacity
-          style={[styles.button, styles.editButton]}
-          onPress={onEdit}
-        >
-          <Text style={styles.buttonText}>{t.common.edit}</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[styles.button, styles.deleteButton]}
-          onPress={onDelete}
-        >
-          <Text style={styles.buttonText}>{t.common.delete}</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        style={styles.deleteIcon}
+        onPress={onDelete}
+      >
+        <Text style={styles.deleteIconText}>🗑️</Text>
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 };
@@ -88,24 +77,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
   },
-  buttons: {
-    flexDirection: 'row',
-    gap: 10,
-  },
-  button: {
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+  deleteIcon: {
+    padding: 8,
     borderRadius: 6,
   },
-  editButton: {
-    backgroundColor: '#2563eb',
-  },
-  deleteButton: {
-    backgroundColor: '#dc2626',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 14,
-    fontWeight: '500',
+  deleteIconText: {
+    fontSize: 20,
   },
 }); 

@@ -22,7 +22,6 @@ interface ReceptContextType extends ReceptState {
   upravitRecept: (recept: Recept) => Promise<void>;
   smazatRecept: (id: string) => Promise<void>;
   pridatKategorii: (nazev: string) => Promise<void>;
-  upravitKategorii: (kategorie: Kategorie) => Promise<void>;
   smazatKategorii: (id: string) => Promise<void>;
 }
 
@@ -34,7 +33,6 @@ type ReceptAction =
   | { type: 'UPRAVIT_RECEPT'; payload: Recept }
   | { type: 'SMAZAT_RECEPT'; payload: string }
   | { type: 'PRIDAT_KATEGORII'; payload: Kategorie }
-  | { type: 'UPRAVIT_KATEGORII'; payload: Kategorie }
   | { type: 'SMAZAT_KATEGORII'; payload: string };
 
 function receptReducer(state: ReceptState, action: ReceptAction): ReceptState {
@@ -97,13 +95,6 @@ function receptReducer(state: ReceptState, action: ReceptAction): ReceptState {
       return {
         ...state,
         kategorie: [...state.kategorie, action.payload],
-      };
-    case 'UPRAVIT_KATEGORII':
-      return {
-        ...state,
-        kategorie: state.kategorie.map(kat =>
-          kat.id === action.payload.id ? action.payload : kat
-        ),
       };
     case 'SMAZAT_KATEGORII':
       return {
@@ -232,16 +223,6 @@ export const ReceptProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
-  const upravitKategorii = async (kategorie: Kategorie) => {
-    try {
-      await storage.ulozitKategorii(kategorie);
-      dispatch({ type: 'UPRAVIT_KATEGORII', payload: kategorie });
-    } catch (error) {
-      dispatch({ type: 'SET_ERROR', payload: 'Chyba při úpravě kategorie' });
-      throw error;
-    }
-  };
-
   const smazatKategorii = async (id: string) => {
     try {
       await storage.smazatKategorii(id);
@@ -258,7 +239,6 @@ export const ReceptProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     upravitRecept,
     smazatRecept,
     pridatKategorii,
-    upravitKategorii,
     smazatKategorii,
   };
 
