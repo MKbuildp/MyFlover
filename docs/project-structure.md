@@ -1,6 +1,6 @@
 # Struktura Projektu MyFlavor
 
-*Poslední aktualizace: 24.7.2025*
+*Poslední aktualizace: 26.12.2024 - Kompletní přehled aktuálního stavu projektu*
 
 ## Popis Aplikace
 
@@ -12,90 +12,66 @@ MyFlavor je osobní digitální kuchařka, která funguje jako moderní verze tr
 - Dvojjazyčné rozhraní (CZ/EN)
 - Strukturované recepty
 - Intuitivní vyhledávání a kategorizace
+- **Editace existujících receptů**
+- **Správa receptů (editace, mazání)**
 
 ## Plán Implementace
 
-### Fáze 1: Základní Setup a Navigace
-1. **Jazyková Podpora**
-   - Implementace LanguageContext
-   - Překlad všech textů (CZ/EN)
-   - Obrazovka výběru jazyka
+### Fáze 1: Základní Setup a Navigace ✅
+1. **Jazyková Podpora** ✅
+   - Implementace LanguageContext ✅
+   - Překlad všech textů (CZ/EN) ✅
+   - Obrazovka výběru jazyka ✅
 
-2. **Základní Navigace**
-   - Tab Navigator (Kategorie, Vyhledávání, Přidat Recept)
-   - Stack Navigator pro detail receptu
-   - Modální okna pro editaci
+2. **Základní Navigace** ✅
+   - Tab Navigator (Kategorie, Vyhledávání, Přidat Recept) ✅
+   - Stack Navigator pro detail receptu ✅
+   - Modální okna pro editaci ✅
 
-### Fáze 2: Datový Model a Lokální Úložiště
-1. **TypeScript Typy**
-   ```typescript
-   interface Recept {
-     id: string;
-     nazev: string;
-     popis?: string;
-     fotografie?: string;
-     dobaPrivavy: number;
-     dobaVareni: number;
-     pocetPorci: number;
-     kategorie: string[];
-     ingredience: Ingredience[];
-     postup: KrokPostupu[];
-     vytvoreno: Date;
-     upraveno: Date;
-   }
+### Fáze 2: Datový Model a Lokální Úložiště ✅
+1. **TypeScript Typy** ✅
+   - Kompletní definice receptů, ingrediencí a postupů ✅
+   - Typy pro nové recepty a editaci ✅
 
-   interface Ingredience {
-     mnozstvi: number;
-     jednotka: string;
-     nazev: string;
-     odskrtnuto?: boolean;
-   }
+2. **AsyncStorage Implementace** ✅
+   - Ukládání receptů ✅
+   - Správa kategorií ✅
+   - Cachování obrázků ✅
 
-   interface KrokPostupu {
-     cislo: number;
-     text: string;
-     odskrtnuto?: boolean;
-     casovac?: number;
-   }
-   ```
+### Fáze 3: Základní UI Komponenty ✅
+1. **Sdílené Komponenty** ✅
+   - FloatingActionButton ✅
+   - KategorieKarta ✅
+   - FormularPole ✅
+   - IngrediencePolozka ✅
+   - PostupPolozka ✅
 
-2. **AsyncStorage Implementace**
-   - Ukládání receptů
-   - Správa kategorií
-   - Cachování obrázků
+2. **Obrazovky** ✅
+   - VyberJazykaScreen ✅
+   - KategorieScreen ✅
+   - VyhledavaniScreen ✅
+   - PridatReceptScreen ✅
+   - DetailReceptuScreen ✅
+   - **EditovatReceptScreen** ✅
 
-### Fáze 3: Základní UI Komponenty
-1. **Sdílené Komponenty**
-   - ReceptKarta
-   - KategorieKarta
-   - FormularPole
-   - IngrediencePolozka
-   - PostupPolozka
-   - Časovač
+### Fáze 4: Hlavní Funkcionality ✅
+1. **Správa Receptů** ✅
+   - Vytvoření nového receptu ✅
+   - **Editace existujícího receptu** ✅
+   - **Mazání receptu** ✅
+   - Fotografie (galerie/kamera) ✅
 
-2. **Obrazovky**
-   - VyberJazykaScreen
-   - KategorieScreen
-   - VyhledavaniScreen
-   - PridatReceptScreen
-   - DetailReceptuScreen
+2. **Kategorizace a Vyhledávání** ✅
+   - Správa kategorií ✅
+   - Fulltextové vyhledávání ✅
+   - Filtrování podle kategorií ✅
 
-### Fáze 4: Hlavní Funkcionality
-1. **Správa Receptů**
-   - Vytvoření nového receptu
-   - Editace existujícího receptu
-   - Mazání receptu
-   - Fotografie (galerie/kamera)
-
-2. **Kategorizace a Vyhledávání**
-   - Správa kategorií
-   - Fulltextové vyhledávání
-   - Filtrování podle kategorií
-
-3. **Detail Receptu**
-   - Interaktivní odškrtávání
-   - Integrovaný časovač
-   - Režim vaření (větší písmo, přehlednost)
+3. **Detail Receptu** ✅
+   - Interaktivní odškrtávání ✅
+   - Integrovaný časovač ✅
+   - Režim vaření (větší písmo, přehlednost) ✅
+   - **Hlavička s titulem "Detail receptu"** ✅
+   - **Ikona nastavení s menu pro editaci a mazání** ✅
 
 ### Fáze 5: Rozšířené Funkce
 1. **Optimalizace**
@@ -107,6 +83,33 @@ MyFlavor je osobní digitální kuchařka, která funguje jako moderní verze tr
    - Animace a přechody
    - Haptická odezva
    - Gesta pro navigaci
+
+## Nově Implementované Funkce
+
+### ✨ **Editace Receptů**
+- **EditovatReceptScreen** - Nová obrazovka pro úpravu existujících receptů
+- **Inicializace s existujícími daty** - Automatické načtení všech polí receptu
+- **Validace formuláře** - Kontrola pouze povinných polí (název a kategorie) před uložením
+- **Generování nových ID** - Pro ingredience a kroky při editaci
+- **Konzistentní podmínky uložení** - Stejné jako na obrazovce "Nový recept"
+
+### 🎯 **Vylepšená Hlavička Detailu Receptu**
+- **Titulek "Detail receptu"** - Jasná identifikace obrazovky, vycentrovaný na střed
+- **Ikona ozubeného kolečka (settings)** - Intuitivní ikona pro nastavení, posunutá více doprava
+- **Menu s možnostmi**:
+  - **Upravit** - Navigace na EditovatReceptScreen
+  - **Smazat** - Potvrzovací dialog s mazáním receptu
+
+### 🔧 **Optimalizovaná Obrazovka Editace Receptu**
+- **Hlavička vycentrovaná** - Titulek "Upravit recept" na středu obrazovky
+- **Stejné pořadí komponent** - Název, Popis, časy a porce, kategorie, ingredience, kroky, fotografie (stejně jako na obrazovce "Přidat recept")
+- **Konzistentní šířka komponent** - Všechny komponenty mají stejnou šířku jako komponenta "Přidat fotografii"
+- **Fotografie na konci** - Sekce s fotografiemi je umístěna na konci formuláře
+
+### 🔄 **Navigační Vylepšení**
+- **Nová obrazovka EditovatRecept** v RootNavigator
+- **Automatická navigace zpět** po úspěšné editaci
+- **Potvrzovací dialogy** pro kritické operace
 
 ## App Store Identifikátory
 
@@ -125,28 +128,87 @@ MyFlavor je mobilní aplikace vytvořená pomocí React Native (Expo) s TypeScri
 - React Navigation
 - Expo Managed Workflow
 
-## Adresářová Struktura
+## Aktuální Adresářová Struktura
 
 ```
 MyFlavor/
 ├── src/                      # Hlavní zdrojový kód aplikace
 │   ├── components/          # Sdílené komponenty
+│   │   └── FloatingActionButton.tsx (1.3KB, 59 řádků)
 │   ├── screens/            # Obrazovky aplikace
-│   ├── hooks/              # Custom React hooks
-│   ├── utils/              # Pomocné funkce a utility
+│   │   ├── DetailReceptu/  # Detail receptu s editací
+│   │   │   ├── components/
+│   │   │   │   ├── DetailReceptuHeaderRight.tsx (2.8KB, 107 řádků)
+│   │   │   │   ├── ReceptHeader.tsx (2.2KB, 85 řádků)
+│   │   │   │   ├── SeznamIngrediencie.tsx (1.5KB, 64 řádků)
+│   │   │   │   └── SeznamKroku.tsx (2.2KB, 97 řádků)
+│   │   │   └── DetailReceptuScreen.tsx (5.3KB, 180 řádků)
+│   │   ├── EditovatRecept/ # Nová obrazovka pro editaci
+│   │   │   ├── EditovatReceptScreen.tsx (8.9KB, 298 řádků)
+│   │   │   └── index.ts (64B, 2 řádky)
+│   │   ├── Kategorie/
+│   │   │   ├── components/
+│   │   │   │   ├── KategorieModal.tsx (3.2KB, 146 řádků)
+│   │   │   │   └── KategoriePolozka.tsx (2.2KB, 87 řádků)
+│   │   │   └── KategorieScreen.tsx (2.6KB, 86 řádků)
+│   │   ├── PridatRecept/
+│   │   │   ├── components/
+│   │   │   │   ├── FotografieSekce.tsx (4.1KB, 176 řádků)
+│   │   │   │   ├── SeznamIngredience.tsx (9.3KB, 377 řádků)
+│   │   │   │   ├── SeznamKroku.tsx (6.3KB, 244 řádků)
+│   │   │   │   └── ZakladniInformace.tsx (6.1KB, 239 řádků)
+│   │   │   └── PridatReceptScreen.tsx (7.0KB, 253 řádků)
+│   │   ├── SeznamReceptu/
+│   │   │   └── SeznamReceptuScreen.tsx (5.7KB, 195 řádků)
+│   │   ├── Vyhledavani/
+│   │   │   └── VyhledavaniScreen.tsx (548B, 25 řádků)
+│   │   └── VyberJazyka/
+│   │       └── VyberJazykaScreen.tsx (1.9KB, 76 řádků)
+│   ├── context/            # React Context pro správu stavu
+│   │   ├── ReceptContext.tsx (8.1KB, 259 řádků)
+│   │   └── LanguageContext.tsx (2.0KB, 69 řádků)
+│   ├── navigation/         # Navigační komponenty
+│   │   ├── RootNavigator.tsx (2.3KB, 60 řádků)
+│   │   └── TabNavigator.tsx (2.6KB, 85 řádků)
 │   ├── types/              # TypeScript definice typů
-│   ├── assets/            # Obrázky, fonty a další statické soubory
-│   └── constants/         # Konstanty a konfigurační hodnoty
+│   │   ├── navigation.ts (701B, 31 řádků)
+│   │   └── recept.ts (1.4KB, 74 řádků)
+│   ├── utils/              # Pomocné funkce a utility
+│   │   ├── storage.ts (3.6KB, 120 řádků)
+│   │   └── helpers.ts (179B, 6 řádků)
+│   └── translations/       # Jazykové překlady
+│       ├── cs.ts (2.1KB, 82 řádků)
+│       ├── en.ts (2.0KB, 82 řádků)
+│       └── index.ts (295B, 14 řádků)
 │
 ├── docs/                    # Dokumentace projektu
+│   ├── cursor-rules.md      # Pravidla pro vývoj
 │   └── project-structure.md # Tento soubor - struktura projektu
 │
 ├── app.json                # Konfigurace Expo
 ├── App.tsx                 # Kořenový komponent aplikace
-├── babel.config.js         # Konfigurace Babelu
 ├── package.json            # NPM závislosti a skripty
-└── tsconfig.json          # Konfigurace TypeScriptu
+├── package-lock.json       # Zamykané verze závislostí
+├── tsconfig.json          # Konfigurace TypeScriptu
+├── eas.json               # Konfigurace EAS Build
+└── index.ts               # Vstupní bod aplikace
 ```
+
+## Analýza Velikosti Souborů
+
+### ✅ Soubory v Optimálním Rozsahu (50-200 řádků)
+- **DetailReceptuScreen.tsx** (180 řádků) - ✅
+- **SeznamReceptuScreen.tsx** (195 řádků) - ✅
+- **PridatReceptScreen.tsx** (253 řádků) - ✅
+- **ReceptContext.tsx** (259 řádků) - ✅
+
+### ⚠️ Soubory Přesahující Doporučenou Velikost (>200 řádků)
+- **EditovatReceptScreen.tsx** (298 řádků) - ⚠️ Přesahuje doporučených 200 řádků
+- **SeznamIngredience.tsx** (377 řádků) - ❌ Výrazně přesahuje doporučených 200 řádků
+
+### 🔧 Doporučení pro Optimalizaci
+1. **EditovatReceptScreen.tsx** - Rozdělit na menší komponenty podle pravidel
+2. **SeznamIngredience.tsx** - Urgentně rozdělit na menší moduly
 
 ## Konvence Pojmenování
 
@@ -182,11 +244,12 @@ MyFlavor/
 
 ## Správa Stavu
 - Lokální stav: React useState
-- Globální stav: (bude doplněno podle potřeby)
+- Globální stav: ReceptContext s useReducer
 
 ## Navigace
-- React Navigation
+- React Navigation 7
 - Stack Navigator pro hlavní navigaci
+- Tab Navigator pro hlavní sekce
 
 ## Styly
 - React Native StyleSheet
@@ -195,7 +258,7 @@ MyFlavor/
 ## Assets
 - Obrázky: PNG nebo SVG
 - Fonty: (bude doplněno)
-- Ikony: (bude doplněno)
+- Ikony: Ionicons z Expo
 
 ## Poznámky k Vývoji
 - Veškerý kód musí být v TypeScriptu
@@ -203,6 +266,9 @@ MyFlavor/
 - Dodržujeme pravidla pro velikost souborů (max 350 řádků)
 - Veškeré názvy v češtině
 - Dokumentace komponent pomocí JSDoc komentářů
+- **Nově implementované funkce editace a mazání receptů**
+- **Potřeba optimalizace velkých souborů podle pravidel**
 
 ---
+
 *Tento dokument bude průběžně aktualizován s vývojem projektu.* 

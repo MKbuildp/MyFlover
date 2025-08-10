@@ -10,6 +10,9 @@ export type RootStackParamList = {
   DetailReceptu: {
     receptId: string;
   };
+  EditovatRecept: {
+    receptId: string;
+  };
 };
 
 export type TabNavigatorParamList = {

@@ -27,6 +27,8 @@ export const cs = {
   },
   recipe: {
     new: 'Nový recept',
+    edit: 'Upravit recept',
+    detail: 'Detail receptu',
     name: 'Název receptu',
     namePlaceholder: 'Např. Svíčková na smetaně',
     description: 'Popis',
@@ -40,6 +42,9 @@ export const cs = {
     addPhoto: 'Přidat fotografii',
     takePhoto: 'Vyfotit',
     choosePhoto: 'Vybrat z galerie',
+    deleteConfirmation: 'Opravdu chcete smazat tento recept?',
+    deleteError: 'Chyba při mazání receptu',
+    editSuccess: 'Recept byl úspěšně upraven',
   },
   ingredients: {
     amount: 'Množství',

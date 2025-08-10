@@ -5,8 +5,10 @@ import { RootStackParamList } from '../types/navigation';
 import { VyberJazykaScreen } from '../screens/VyberJazyka/VyberJazykaScreen';
 import { SeznamReceptuScreen } from '../screens/SeznamReceptu/SeznamReceptuScreen';
 import { DetailReceptuScreen } from '../screens/DetailReceptu/DetailReceptuScreen';
+import { EditovatReceptScreen } from '../screens/EditovatRecept';
 import { TabNavigator } from './TabNavigator';
 import { useLanguage } from '../context/LanguageContext';
+import { DetailReceptuHeaderRight } from '../screens/DetailReceptu/components/DetailReceptuHeaderRight';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -32,11 +34,22 @@ export const RootNavigator = () => {
             <Stack.Screen
               name="DetailReceptu"
               component={DetailReceptuScreen}
+              options={({ route }) => ({
+                headerShown: true,
+                title: 'Detail receptu',
+                headerTitleAlign: 'center', // Vycentrování textu na střed
+                headerRight: () => (
+                  <DetailReceptuHeaderRight receptId={route.params.receptId} />
+                ),
+              })}
+            />
+            <Stack.Screen
+              name="EditovatRecept"
+              component={EditovatReceptScreen}
               options={{
                 headerShown: true,
-                title: '',
-                headerTransparent: true,
-                headerTintColor: '#1f2937',
+                title: 'Upravit recept',
+                headerTitleAlign: 'center', // Vycentrování textu na střed
               }}
             />
           </>

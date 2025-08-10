@@ -1,0 +1,1 @@
+export { EditovatReceptScreen } from './EditovatReceptScreen';
