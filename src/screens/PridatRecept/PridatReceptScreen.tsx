@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Alert, KeyboardAvoidingView, Platform, Text, TouchableOpacity, FlatList } from 'react-native';
+import { View, StyleSheet, Alert, KeyboardAvoidingView, Platform, Text, TouchableOpacity, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useLanguage } from '../../context/LanguageContext';
 import { useRecepty } from '../../context/ReceptContext';
 import { ZakladniInformace } from './components/ZakladniInformace';
 import { SeznamIngredience } from './components/SeznamIngredience';
 import { SeznamKroku } from './components/SeznamKroku';
+import { FotografieSekce } from './components/FotografieSekce';
 import { NovaIngredience, NovyKrokPostupu } from '../../types/recept';
 
 export const PridatReceptScreen = () => {
@@ -99,16 +100,6 @@ export const PridatReceptScreen = () => {
       return;
     }
 
-    if (ingredience.length === 0) {
-      Alert.alert('Chyba', 'Přidejte alespoň jednu ingredienci');
-      return;
-    }
-
-    if (kroky.length === 0) {
-      Alert.alert('Chyba', 'Přidejte alespoň jeden krok postupu');
-      return;
-    }
-
     try {
       await pridatRecept({
         nazev: nazev.trim(),
@@ -148,66 +139,58 @@ export const PridatReceptScreen = () => {
     );
   }
 
-  const renderHeader = () => (
-    <>
-      <ZakladniInformace
-        nazev={nazev}
-        setNazev={setNazev}
-        popis={popis}
-        setPopis={setPopis}
-        dobaPrivavy={dobaPrivavy}
-        setDobaPrivavy={setDobaPrivavy}
-        dobaVareni={dobaVareni}
-        setDobaVareni={setDobaVareni}
-        pocetPorci={pocetPorci}
-        setPocetPorci={setPocetPorci}
-        fotografie={fotografie}
-        onVyberFoto={vyberFotografii}
-        onVyfotit={vyfotit}
-        vybraneKategorie={vybraneKategorie}
-        setVybraneKategorie={setVybraneKategorie}
-      />
-      
-      <SeznamIngredience
-        ingredience={ingredience}
-        onPridatIngredience={pridatIngredience}
-        onSmazatIngredience={smazatIngredience}
-      />
-      
-      <SeznamKroku
-        kroky={kroky}
-        onPridatKrok={pridatKrok}
-        onSmazatKrok={smazatKrok}
-        onPresunoutKrok={presunoutKrok}
-      />
-    </>
-  );
-
-  const renderFooter = () => (
-    <>
-      <TouchableOpacity 
-        style={styles.ulozitButton}
-        onPress={ulozitRecept}
-      >
-        <Text style={styles.ulozitButtonText}>{t.common.save}</Text>
-      </TouchableOpacity>
-      <View style={styles.spacer} />
-    </>
-  );
-
   return (
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <FlatList
-        data={[]} // Prázdné pole, protože používáme jen header a footer
-        renderItem={() => null}
-        ListHeaderComponent={renderHeader}
-        ListFooterComponent={renderFooter}
-        style={styles.flatList}
+      <ScrollView 
+        style={styles.scrollView}
         contentContainerStyle={styles.contentContainer}
-      />
+        keyboardShouldPersistTaps="handled"
+      >
+        <ZakladniInformace
+          nazev={nazev}
+          setNazev={setNazev}
+          popis={popis}
+          setPopis={setPopis}
+          dobaPrivavy={dobaPrivavy}
+          setDobaPrivavy={setDobaPrivavy}
+          dobaVareni={dobaVareni}
+          setDobaVareni={setDobaVareni}
+          pocetPorci={pocetPorci}
+          setPocetPorci={setPocetPorci}
+          vybraneKategorie={vybraneKategorie}
+          setVybraneKategorie={setVybraneKategorie}
+        />
+        
+        <SeznamIngredience
+          ingredience={ingredience}
+          onPridatIngredience={pridatIngredience}
+          onSmazatIngredience={smazatIngredience}
+        />
+        
+        <SeznamKroku
+          kroky={kroky}
+          onPridatKrok={pridatKrok}
+          onSmazatKrok={smazatKrok}
+          onPresunoutKrok={presunoutKrok}
+        />
+
+        <FotografieSekce
+          fotografie={fotografie}
+          onVyberFoto={vyberFotografii}
+          onVyfotit={vyfotit}
+        />
+        
+        <TouchableOpacity 
+          style={styles.ulozitButton}
+          onPress={ulozitRecept}
+        >
+          <Text style={styles.ulozitButtonText}>{t.common.save}</Text>
+        </TouchableOpacity>
+        <View style={styles.spacer} />
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };
@@ -215,13 +198,14 @@ export const PridatReceptScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#f8fafc',
   },
-  flatList: {
+  scrollView: {
     flex: 1,
   },
   contentContainer: {
     flexGrow: 1,
+    paddingVertical: 10,
   },
   spacer: {
     height: 20,

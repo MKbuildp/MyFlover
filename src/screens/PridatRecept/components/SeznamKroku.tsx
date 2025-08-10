@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useLanguage } from '../../../context/LanguageContext';
 import { NovyKrokPostupu } from '../../../types/recept';
@@ -34,49 +34,11 @@ export const SeznamKroku: React.FC<SeznamKrokuProps> = ({
     setNovyKrokCasovac('');
   };
 
-  const renderKrok = ({ item, index }: { item: NovyKrokPostupu; index: number }) => (
-    <View style={styles.krokPolozka}>
-      <View style={styles.krokHeader}>
-        <Text style={styles.krokCislo}>{item.cislo}.</Text>
-        <View style={styles.krokAkce}>
-          {index > 0 && (
-            <TouchableOpacity
-              style={styles.krokTlacitko}
-              onPress={() => onPresunoutKrok(index, index - 1)}
-            >
-              <Ionicons name="arrow-up" size={20} color="#666" />
-            </TouchableOpacity>
-          )}
-          {index < kroky.length - 1 && (
-            <TouchableOpacity
-              style={styles.krokTlacitko}
-              onPress={() => onPresunoutKrok(index, index + 1)}
-            >
-              <Ionicons name="arrow-down" size={20} color="#666" />
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            style={[styles.krokTlacitko, styles.smazatTlacitko]}
-            onPress={() => onSmazatKrok(index)}
-          >
-            <Ionicons name="trash-outline" size={20} color="#ef4444" />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <Text style={styles.krokText}>{item.text}</Text>
-      {item.casovac && (
-        <View style={styles.casovacBadge}>
-          <Ionicons name="timer-outline" size={16} color="#2563eb" />
-          <Text style={styles.casovacText}>{item.casovac} min</Text>
-        </View>
-      )}
-    </View>
-  );
-
   return (
     <View style={styles.container}>
-      <Text style={styles.nadpis}>{t.steps.step}</Text>
       <View style={styles.formular}>
+        <Text style={styles.nadpis}>Postup</Text>
+        
         {/* První řádek - text kroku */}
         <TextInput
           style={[styles.input, styles.textInput]}
@@ -109,28 +71,74 @@ export const SeznamKroku: React.FC<SeznamKrokuProps> = ({
           </TouchableOpacity>
         </View>
       </View>
-      <FlatList
-        data={kroky}
-        renderItem={renderKrok}
-        keyExtractor={(_, index) => index.toString()}
-        style={styles.seznam}
-      />
+      <ScrollView style={styles.seznam}>
+        {kroky.map((item, index) => (
+          <View style={styles.krokPolozka} key={index}>
+            <View style={styles.krokHeader}>
+              <Text style={styles.krokCislo}>{item.cislo}.</Text>
+              <View style={styles.krokAkce}>
+                {index > 0 && (
+                  <TouchableOpacity
+                    style={styles.krokTlacitko}
+                    onPress={() => onPresunoutKrok(index, index - 1)}
+                  >
+                    <Ionicons name="arrow-up" size={20} color="#666" />
+                  </TouchableOpacity>
+                )}
+                {index < kroky.length - 1 && (
+                  <TouchableOpacity
+                    style={styles.krokTlacitko}
+                    onPress={() => onPresunoutKrok(index, index + 1)}
+                  >
+                    <Ionicons name="arrow-down" size={20} color="#666" />
+                  </TouchableOpacity>
+                )}
+                <TouchableOpacity
+                  style={[styles.krokTlacitko, styles.smazatTlacitko]}
+                  onPress={() => onSmazatKrok(index)}
+                >
+                  <Ionicons name="trash-outline" size={20} color="#ef4444" />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <Text style={styles.krokText}>{item.text}</Text>
+            {item.casovac && (
+              <View style={styles.casovacBadge}>
+                <Ionicons name="timer-outline" size={16} color="#2563eb" />
+                <Text style={styles.casovacText}>{item.casovac} min</Text>
+              </View>
+            )}
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    paddingHorizontal: 15,
+  },
+  formular: {
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 15,
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
   nadpis: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#1f2937',
-    marginBottom: 16,
-  },
-  formular: {
-    marginBottom: 16,
+    marginBottom: 15,
+    textAlign: 'center',
   },
   input: {
     backgroundColor: '#f9fafb',
@@ -139,7 +147,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 12,
     fontSize: 16,
-    color: '#1f2937',
+    color: '#374151',
   },
   textInput: {
     minHeight: 80,
@@ -172,15 +180,24 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   seznam: {
-    marginTop: 16,
+    marginTop: 10,
+    maxHeight: 400, // Přidána maximální výška
   },
   krokPolozka: {
-    backgroundColor: '#f9fafb',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 12,
+    backgroundColor: 'white',
+    borderRadius: 12,
+    padding: 15,
+    marginBottom: 10,
     borderWidth: 1,
     borderColor: '#e5e7eb',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
   },
   krokHeader: {
     flexDirection: 'row',
@@ -205,7 +222,7 @@ const styles = StyleSheet.create({
   },
   krokText: {
     fontSize: 16,
-    color: '#1f2937',
+    color: '#374151',
     lineHeight: 24,
   },
   casovacBadge: {

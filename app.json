@@ -2,7 +2,7 @@
   "expo": {
     "name": "MyFlavor",
     "slug": "my-flavor",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -16,22 +16,27 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.mk4buildp.myflavor"
+      "bundleIdentifier": "com.mk4buildp.myflavor",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.mk4buildp.myflavor"
+      "package": "com.mk4buildp.myflavor",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "SJSQ65A7N8"
+        "projectId": "2eddf1bb-2863-4bb5-ab06-af5eb57679b3"
       }
-    }
+    },
+    "owner": "mkbuild"
   }
 }

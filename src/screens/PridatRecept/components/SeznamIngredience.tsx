@@ -5,9 +5,9 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  FlatList,
   Modal,
   Pressable,
+  ScrollView,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useLanguage } from '../../../context/LanguageContext';
@@ -70,25 +70,11 @@ export const SeznamIngredience: React.FC<SeznamIngredienceProps> = ({
     }
   };
 
-  const renderIngredience = ({ item, index }: { item: NovaIngredience; index: number }) => (
-    <View style={styles.ingrediencePolozka}>
-      <Text style={styles.ingredienceText}>
-        {item.mnozstvi} {item.jednotka} {item.nazev}
-      </Text>
-      <TouchableOpacity
-        style={styles.smazatTlacitko}
-        onPress={() => onSmazatIngredience(index)}
-      >
-        <Ionicons name="trash-outline" size={20} color="white" />
-      </TouchableOpacity>
-    </View>
-  );
-
   return (
     <View style={styles.container}>
-      <Text style={styles.nadpis}>{t.ingredients.amount}</Text>
-      
       <View style={styles.formular}>
+        <Text style={styles.nadpis}>{t.ingredients.amount}</Text>
+        
         {/* První řádek - množství a jednotka */}
         <View style={[styles.row, styles.centeredRow]}>
           <View style={styles.inputWrapper}>
@@ -138,12 +124,21 @@ export const SeznamIngredience: React.FC<SeznamIngredienceProps> = ({
         </View>
       </View>
 
-      <FlatList
-        data={ingredience}
-        renderItem={renderIngredience}
-        keyExtractor={(_, index) => index.toString()}
-        style={styles.seznam}
-      />
+      <ScrollView style={styles.seznam}>
+        {ingredience.map((item, index) => (
+          <View style={styles.ingrediencePolozka} key={index}>
+            <Text style={styles.ingredienceText}>
+              {item.mnozstvi} {item.jednotka} {item.nazev}
+            </Text>
+            <TouchableOpacity
+              style={styles.smazatTlacitko}
+              onPress={() => onSmazatIngredience(index)}
+            >
+              <Ionicons name="trash-outline" size={20} color="white" />
+            </TouchableOpacity>
+          </View>
+        ))}
+      </ScrollView>
 
       {/* Modální okno pro výběr jednotky */}
       <Modal
@@ -198,15 +193,28 @@ export const SeznamIngredience: React.FC<SeznamIngredienceProps> = ({
 
 const styles = StyleSheet.create({
   container: {
+    paddingHorizontal: 15,
+  },
+  formular: {
+    backgroundColor: 'white',
+    borderRadius: 12,
     padding: 15,
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
   },
   nadpis: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#1f2937',
     marginBottom: 15,
-  },
-  formular: {
-    marginBottom: 15,
+    textAlign: 'center',
   },
   row: {
     flexDirection: 'row',
@@ -225,26 +233,26 @@ const styles = StyleSheet.create({
     width: '35%',
   },
   input: {
-    backgroundColor: 'white',
+    backgroundColor: '#f9fafb',
     borderRadius: 10,
     padding: 12,
     fontSize: 16,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#e5e7eb',
   },
   jednotkaButton: {
-    backgroundColor: 'white',
+    backgroundColor: '#f9fafb',
     borderRadius: 10,
     padding: 12,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#e5e7eb',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   jednotkaButtonText: {
     fontSize: 16,
-    color: '#000',
+    color: '#374151',
   },
   pridatTlacitko: {
     backgroundColor: '#2563eb',
@@ -273,11 +281,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#e5e7eb',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
   },
   ingredienceText: {
     fontSize: 16,
     flex: 1,
+    color: '#374151',
   },
   smazatTlacitko: {
     backgroundColor: '#dc2626',
