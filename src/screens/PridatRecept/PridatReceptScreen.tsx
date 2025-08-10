@@ -18,7 +18,7 @@ export const PridatReceptScreen = () => {
   const [dobaPrivavy, setDobaPrivavy] = useState('');
   const [dobaVareni, setDobaVareni] = useState('');
   const [pocetPorci, setPocetPorci] = useState('');
-  const [fotografie, setFotografie] = useState<string>();
+  const [fotografie, setFotografie] = useState<string[]>([]);
   const [ingredience, setIngredience] = useState<NovaIngredience[]>([]);
   const [kroky, setKroky] = useState<NovyKrokPostupu[]>([]);
   const [vybraneKategorie, setVybraneKategorie] = useState<string[]>([]);
@@ -27,12 +27,15 @@ export const PridatReceptScreen = () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
+      allowsMultipleSelection: true,
+      selectionLimit: 10,
       aspect: [16, 9],
       quality: 0.8,
     });
 
-    if (!result.canceled && result.assets[0]) {
-      setFotografie(result.assets[0].uri);
+    if (!result.canceled && result.assets.length > 0) {
+      const noveFotky = result.assets.map(asset => asset.uri);
+      setFotografie([...fotografie, ...noveFotky]);
     }
   };
 
@@ -51,8 +54,12 @@ export const PridatReceptScreen = () => {
     });
 
     if (!result.canceled && result.assets[0]) {
-      setFotografie(result.assets[0].uri);
+      setFotografie([...fotografie, result.assets[0].uri]);
     }
+  };
+
+  const smazatFotku = (index: number) => {
+    setFotografie(fotografie.filter((_, i) => i !== index));
   };
 
   const pridatIngredience = (novaIngredience: NovaIngredience) => {
@@ -119,7 +126,7 @@ export const PridatReceptScreen = () => {
       setDobaPrivavy('');
       setDobaVareni('');
       setPocetPorci('');
-      setFotografie(undefined);
+      setFotografie([]);
       setIngredience([]);
       setKroky([]);
       setVybraneKategorie([]);
@@ -181,6 +188,7 @@ export const PridatReceptScreen = () => {
           fotografie={fotografie}
           onVyberFoto={vyberFotografii}
           onVyfotit={vyfotit}
+          onSmazatFotku={smazatFotku}
         />
         
         <TouchableOpacity 

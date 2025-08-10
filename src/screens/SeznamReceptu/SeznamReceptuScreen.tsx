@@ -30,8 +30,8 @@ export const SeznamReceptuScreen = () => {
       onPress={() => navigation.navigate('DetailReceptu', { receptId: recept.id })}
     >
       <View style={styles.receptObsah}>
-        {recept.fotografie ? (
-          <Image source={{ uri: recept.fotografie }} style={styles.receptFoto} />
+        {recept.fotografie && recept.fotografie.length > 0 ? (
+          <Image source={{ uri: recept.fotografie[0] }} style={styles.receptFoto} />
         ) : (
           <View style={styles.prazdneFoto}>
             <Ionicons name="restaurant-outline" size={32} color="#94a3b8" />

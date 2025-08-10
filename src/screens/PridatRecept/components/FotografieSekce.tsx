@@ -1,19 +1,33 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView, Alert } from 'react-native';
 import { useLanguage } from '../../../context/LanguageContext';
+import { Ionicons } from '@expo/vector-icons';
 
 interface FotografieSekceProps {
-  fotografie?: string;
+  fotografie: string[];
   onVyberFoto: () => void;
   onVyfotit: () => void;
+  onSmazatFotku: (index: number) => void;
 }
 
 export const FotografieSekce: React.FC<FotografieSekceProps> = ({
   fotografie,
   onVyberFoto,
   onVyfotit,
+  onSmazatFotku,
 }) => {
   const { t } = useLanguage();
+
+  const handleSmazatFotku = (index: number) => {
+    Alert.alert(
+      'Smazat fotku',
+      'Opravdu chcete smazat tuto fotku?',
+      [
+        { text: 'Zrušit', style: 'cancel' },
+        { text: 'Smazat', onPress: () => onSmazatFotku(index) }
+      ]
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -35,10 +49,29 @@ export const FotografieSekce: React.FC<FotografieSekceProps> = ({
           </Text>
         </TouchableOpacity>
       </View>
-      
-      {fotografie && (
-        <View style={styles.fotoPreview}>
-          <Image source={{ uri: fotografie }} style={styles.foto} />
+
+      {fotografie.length > 0 && (
+        <View style={styles.fotkyContainer}>
+          <Text style={styles.fotkyNadpis}>
+            Nahrané fotky ({fotografie.length}/10)
+          </Text>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.fotkyScroll}
+          >
+            {fotografie.map((fotka, index) => (
+              <View key={index} style={styles.fotkaKontejner}>
+                <Image source={{ uri: fotka }} style={styles.fotka} />
+                <TouchableOpacity
+                  style={styles.smazatButton}
+                  onPress={() => handleSmazatFotku(index)}
+                >
+                  <Ionicons name="close-circle" size={24} color="#ef4444" />
+                </TouchableOpacity>
+              </View>
+            ))}
+          </ScrollView>
         </View>
       )}
     </View>
@@ -104,5 +137,39 @@ const styles = StyleSheet.create({
   foto: {
     width: '100%',
     height: '100%',
+  },
+  fotkyContainer: {
+    marginTop: 15,
+    paddingBottom: 10,
+  },
+  fotkyNadpis: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#1f2937',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  fotkyScroll: {
+    paddingHorizontal: 5,
+  },
+  fotkaKontejner: {
+    width: 100,
+    height: 100,
+    marginRight: 10,
+    borderRadius: 8,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  fotka: {
+    width: '100%',
+    height: '100%',
+  },
+  smazatButton: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    borderRadius: 15,
+    padding: 5,
   },
 });

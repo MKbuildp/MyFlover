@@ -18,8 +18,16 @@ export const DetailReceptuScreen = () => {
   const route = useRoute<DetailReceptuRouteProp>();
   const navigation = useNavigation<DetailReceptuNavigationProp>();
   const { recepty } = useRecepty();
+  
+  // State pro aktivní fotku (index)
+  const [aktivniFotoIndex, setAktivniFotoIndex] = React.useState(0);
 
   const recept = recepty.find(r => r.id === route.params.receptId);
+
+  // Funkce pro změnu aktivní fotky
+  const zmenitAktivniFoto = (index: number) => {
+    setAktivniFotoIndex(index);
+  };
 
   if (!recept) {
     return (
@@ -40,8 +48,39 @@ export const DetailReceptuScreen = () => {
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        {recept.fotografie ? (
-          <Image source={{ uri: recept.fotografie }} style={styles.foto} />
+        {recept.fotografie && recept.fotografie.length > 0 ? (
+          <View>
+            {/* Hlavní velká fotka */}
+            <Image source={{ uri: recept.fotografie[aktivniFotoIndex] }} style={styles.hlavniFoto} />
+            
+            {/* Pás s menšími náhledy - pouze pokud jsou další fotky */}
+            {recept.fotografie.length > 1 && (
+              <View style={styles.nahledyContainer}>
+                <ScrollView 
+                  horizontal 
+                  showsHorizontalScrollIndicator={false}
+                  contentContainerStyle={styles.nahledyScroll}
+                >
+                  {recept.fotografie.map((fotka, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      onPress={() => zmenitAktivniFoto(index)}
+                      style={[
+                        styles.nahledFoto, 
+                        index === aktivniFotoIndex && styles.aktivniNahled,
+                        index === recept.fotografie.length - 1 && styles.posledniNahled
+                      ]}
+                    >
+                      <Image 
+                        source={{ uri: fotka }} 
+                        style={styles.nahledFotoObrazek}
+                      />
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+              </View>
+            )}
+          </View>
         ) : (
           <View style={styles.prazdneFoto}>
             <Ionicons name="restaurant-outline" size={48} color="#94a3b8" />
@@ -66,10 +105,35 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  foto: {
+  hlavniFoto: {
     width: '100%',
     height: 250,
+  },
+  nahledyContainer: {
+    height: 80,
     backgroundColor: '#f1f5f9',
+    borderRadius: 0,
+  },
+  nahledyScroll: {
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+  },
+  nahledFoto: {
+    width: 100,
+    height: 70,
+    borderRightWidth: 1,
+    borderRightColor: '#000000',
+  },
+  nahledFotoObrazek: {
+    width: '100%',
+    height: '100%',
+  },
+  aktivniNahled: {
+    borderWidth: 2,
+    borderColor: '#2563eb',
+  },
+  posledniNahled: {
+    borderRightWidth: 0,
   },
   prazdneFoto: {
     width: '100%',

@@ -167,6 +167,7 @@ export const ReceptProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     try {
       const recept: Recept = {
         ...novyRecept,
+        fotografie: novyRecept.fotografie || [],
         id: generateId(),
         vytvoreno: new Date().toISOString(),
         upraveno: new Date().toISOString(),

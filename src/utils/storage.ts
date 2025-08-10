@@ -29,7 +29,28 @@ export const storage = {
   async nacistRecepty(): Promise<Recept[]> {
     try {
       const data = await AsyncStorage.getItem(STORAGE_KEYS.RECEPTY);
-      return data ? JSON.parse(data) : [];
+      if (!data) return [];
+      
+      const recepty = JSON.parse(data);
+      
+      // Migrace starých dat - převod string fotografie na pole
+      const migrovaneRecepty = recepty.map((recept: any) => {
+        if (recept.fotografie && typeof recept.fotografie === 'string') {
+          return {
+            ...recept,
+            fotografie: [recept.fotografie]
+          };
+        }
+        if (!recept.fotografie) {
+          return {
+            ...recept,
+            fotografie: []
+          };
+        }
+        return recept;
+      });
+      
+      return migrovaneRecepty;
     } catch (error) {
       console.error('Chyba při načítání receptů:', error);
       return [];

@@ -2,7 +2,7 @@ export interface Recept {
   id: string;
   nazev: string;
   popis?: string;
-  fotografie?: string;
+  fotografie: string[];
   dobaPrivavy: number; // v minutách
   dobaVareni: number; // v minutách
   pocetPorci: number;
@@ -64,7 +64,7 @@ export interface NovyKrokPostupu {
 export interface NovyRecept {
   nazev: string;
   popis?: string;
-  fotografie?: string;
+  fotografie: string[];
   dobaPrivavy: number;
   dobaVareni: number;
   pocetPorci: number;

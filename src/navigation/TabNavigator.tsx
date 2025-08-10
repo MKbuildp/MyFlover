@@ -17,8 +17,17 @@ export const TabNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: true,
+        headerTitleAlign: 'center',
         tabBarActiveTintColor: '#2563eb',
         tabBarInactiveTintColor: '#64748b',
+        tabBarStyle: {
+          backgroundColor: 'white',
+          borderTopWidth: 1,
+          borderTopColor: '#e5e7eb',
+          paddingBottom: 5,
+          paddingTop: 5,
+          height: 60,
+        },
       }}
     >
       <Tab.Screen
@@ -26,6 +35,13 @@ export const TabNavigator = () => {
         component={KategorieScreen}
         options={({ navigation }) => ({
           title: t.categories.title,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons 
+              name={focused ? "grid" : "grid-outline"} 
+              size={size} 
+              color={color} 
+            />
+          ),
           headerRight: () => (
             <TouchableOpacity
               onPress={() => navigation.setParams({ showKategorieModal: true })}
@@ -41,6 +57,13 @@ export const TabNavigator = () => {
         component={VyhledavaniScreen}
         options={{
           title: t.search.placeholder,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons 
+              name={focused ? "search" : "search-outline"} 
+              size={size} 
+              color={color} 
+            />
+          ),
         }}
       />
       <Tab.Screen
@@ -48,6 +71,13 @@ export const TabNavigator = () => {
         component={PridatReceptScreen}
         options={{
           title: t.recipe.new,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Ionicons 
+              name={focused ? "add-circle" : "add-circle-outline"} 
+              size={size} 
+              color={color} 
+            />
+          ),
         }}
       />
     </Tab.Navigator>
