@@ -9,6 +9,16 @@
         "resourceClass": "m-medium",
         "distribution": "store",
         "credentialsSource": "remote"
+      },
+      "android": {
+        "buildType": "aab",
+        "distribution": "store"
+      }
+    },
+    "development": {
+      "android": {
+        "buildType": "apk",
+        "distribution": "internal"
       }
     }
   },
