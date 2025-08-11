@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { useLanguage } from '../../../context/LanguageContext';
 import { useRecepty } from '../../../context/ReceptContext';
+import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 
 interface ZakladniInformaceProps {
   nazev: string;
@@ -34,6 +36,7 @@ export const ZakladniInformace: React.FC<ZakladniInformaceProps> = ({
 }) => {
   const { t } = useLanguage();
   const { kategorie } = useRecepty();
+  const navigation = useNavigation();
 
   const handleKategoriePress = (kategorieId: string) => {
     setVybraneKategorie(
@@ -114,7 +117,18 @@ export const ZakladniInformace: React.FC<ZakladniInformaceProps> = ({
 
       {/* Kategorie */}
       <View style={styles.sekce}>
-        <Text style={styles.nadpis}>{t.categories.select}</Text>
+        <View style={styles.kategorieHeader}>
+          <Text style={styles.nadpis}>{t.categories.select}</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('HlavniNavigace', {
+              screen: 'Kategorie',
+              params: { showKategorieModal: true }
+            })}
+            style={styles.pridatKategoriiButton}
+          >
+            <Ionicons name="add" size={20} color="#2563eb" />
+          </TouchableOpacity>
+        </View>
         {kategorie.length === 0 ? (
           <Text style={styles.warningText}>{t.categories.createFirst}</Text>
         ) : (
@@ -149,6 +163,18 @@ export const ZakladniInformace: React.FC<ZakladniInformaceProps> = ({
 };
 
 const styles = StyleSheet.create({
+  kategorieHeader: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+    marginBottom: 15,
+  },
+  pridatKategoriiButton: {
+    position: 'absolute',
+    right: 0,
+    padding: 4,
+  },
   container: {
     paddingHorizontal: 15,
   },
