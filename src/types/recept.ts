@@ -11,6 +11,7 @@ export interface Recept {
   postup: KrokPostupu[];
   vytvoreno: string; // ISO string
   upraveno: string; // ISO string
+  oblibeny?: boolean;
 }
 
 export interface Ingredience {

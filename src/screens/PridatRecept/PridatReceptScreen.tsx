@@ -191,6 +191,8 @@ export const PridatReceptScreen = () => {
           onSmazatFotku={smazatFotku}
         />
         
+        <Text style={styles.requiredInfo}>{t.recipe.requiredFields}</Text>
+        
         <TouchableOpacity 
           style={styles.ulozitButton}
           onPress={ulozitRecept}
@@ -204,6 +206,14 @@ export const PridatReceptScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  requiredInfo: {
+    textAlign: 'center',
+    color: '#64748b',
+    fontSize: 14,
+    marginTop: 20,
+    marginBottom: 8,
+    marginHorizontal: 15,
+  },
   container: {
     flex: 1,
     backgroundColor: '#f8fafc',

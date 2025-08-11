@@ -18,6 +18,13 @@ export const TabNavigator = () => {
       screenOptions={{
         headerShown: true,
         headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: 'white',
+        },
+        headerTitleStyle: {
+          textAlign: 'center',
+          width: '100%',
+        },
         tabBarActiveTintColor: '#2563eb',
         tabBarInactiveTintColor: '#64748b',
         tabBarStyle: {
@@ -35,6 +42,7 @@ export const TabNavigator = () => {
         component={KategorieScreen}
         options={({ navigation }) => ({
           title: t.categories.title,
+          headerTitleAlign: 'center',
           tabBarIcon: ({ color, size, focused }) => (
             <Ionicons 
               name={focused ? "grid" : "grid-outline"} 
@@ -56,7 +64,7 @@ export const TabNavigator = () => {
         name="Vyhledavani"
         component={VyhledavaniScreen}
         options={{
-          title: t.search.placeholder,
+          title: t.search.title,
           tabBarIcon: ({ color, size, focused }) => (
             <Ionicons 
               name={focused ? "search" : "search-outline"} 

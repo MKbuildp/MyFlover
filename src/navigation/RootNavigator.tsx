@@ -29,6 +29,7 @@ export const RootNavigator = () => {
               options={({ route }) => ({
                 headerShown: true,
                 title: route.params.nazevKategorie,
+                headerTitleAlign: 'center',
               })}
             />
             <Stack.Screen

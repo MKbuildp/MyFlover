@@ -15,7 +15,7 @@ export const SeznamReceptuScreen = () => {
   const { t } = useLanguage();
   const navigation = useNavigation<SeznamReceptuNavigationProp>();
   const route = useRoute<SeznamReceptuRouteProp>();
-  const { recepty } = useRecepty();
+  const { recepty, prepnoutOblibeny } = useRecepty();
 
   const { kategorieId, nazevKategorie } = route.params;
 
@@ -38,8 +38,23 @@ export const SeznamReceptuScreen = () => {
           </View>
         )}
         
-        <View style={styles.receptInfo}>
-          <Text style={styles.receptNazev}>{recept.nazev}</Text>
+                  <View style={styles.receptInfo}>
+            <View style={styles.receptHeader}>
+              <Text style={styles.receptNazev}>{recept.nazev}</Text>
+              <TouchableOpacity
+                onPress={(e) => {
+                  e.stopPropagation();
+                  prepnoutOblibeny(recept.id);
+                }}
+                style={styles.oblibenyButton}
+              >
+                <Ionicons
+                  name={recept.oblibeny ? "heart" : "heart-outline"}
+                  size={24}
+                  color={recept.oblibeny ? "#ef4444" : "#64748b"}
+                />
+              </TouchableOpacity>
+            </View>
           
           <View style={styles.receptMetadata}>
             {recept.dobaPrivavy > 0 && (
@@ -104,6 +119,16 @@ export const SeznamReceptuScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  receptHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  oblibenyButton: {
+    padding: 4,
+    marginRight: -4,
+  },
   container: {
     flex: 1,
     backgroundColor: 'white',
@@ -148,7 +173,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: '#1f2937',
-    marginBottom: 8,
+    flex: 1,
+    marginRight: 8,
   },
   receptMetadata: {
     gap: 8,

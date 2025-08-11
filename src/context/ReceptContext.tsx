@@ -23,6 +23,7 @@ interface ReceptContextType extends ReceptState {
   smazatRecept: (id: string) => Promise<void>;
   pridatKategorii: (nazev: string) => Promise<void>;
   smazatKategorii: (id: string) => Promise<void>;
+  prepnoutOblibeny: (id: string) => Promise<void>;
 }
 
 type ReceptAction =
@@ -33,10 +34,20 @@ type ReceptAction =
   | { type: 'UPRAVIT_RECEPT'; payload: Recept }
   | { type: 'SMAZAT_RECEPT'; payload: string }
   | { type: 'PRIDAT_KATEGORII'; payload: Kategorie }
-  | { type: 'SMAZAT_KATEGORII'; payload: string };
+  | { type: 'SMAZAT_KATEGORII'; payload: string }
+  | { type: 'PREPNOUT_OBLIBENY'; payload: string };
 
 function receptReducer(state: ReceptState, action: ReceptAction): ReceptState {
   switch (action.type) {
+    case 'PREPNOUT_OBLIBENY':
+      return {
+        ...state,
+        recepty: state.recepty.map(recept =>
+          recept.id === action.payload
+            ? { ...recept, oblibeny: !recept.oblibeny }
+            : recept
+        ),
+      };
     case 'SET_LOADING':
       return { ...state, loading: action.payload };
     case 'SET_ERROR':
@@ -234,6 +245,25 @@ export const ReceptProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     }
   };
 
+  const prepnoutOblibeny = async (id: string) => {
+    try {
+      const recept = state.recepty.find(r => r.id === id);
+      if (!recept) throw new Error('Recept nenalezen');
+
+      const upravenyRecept: Recept = {
+        ...recept,
+        oblibeny: !recept.oblibeny,
+        upraveno: new Date().toISOString(),
+      };
+
+      await storage.ulozitRecept(upravenyRecept);
+      dispatch({ type: 'PREPNOUT_OBLIBENY', payload: id });
+    } catch (error) {
+      dispatch({ type: 'SET_ERROR', payload: 'Chyba při změně oblíbenosti receptu' });
+      throw error;
+    }
+  };
+
   const value = {
     ...state,
     pridatRecept,
@@ -241,6 +271,7 @@ export const ReceptProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     smazatRecept,
     pridatKategorii,
     smazatKategorii,
+    prepnoutOblibeny,
   };
 
   return (
