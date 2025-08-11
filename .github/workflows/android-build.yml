@@ -1,4 +1,4 @@
-name: iOS Build
+name: Android Build
 
 on:
   workflow_dispatch:
@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    name: Build iOS App
+    name: Build Android AAB
     runs-on: ubuntu-latest
     steps:
       - name: 🏗 Setup repository
@@ -35,14 +35,15 @@ jobs:
       - name: 📦 Install dependencies
         run: npm install
 
-      - name: 🚀 Build iOS app
-        run: eas build --platform ios --profile ${{ github.event.inputs.build_type }} --non-interactive --no-wait
+      - name: 🚀 Build Android AAB
+        run: eas build --platform android --profile ${{ github.event.inputs.build_type }} --non-interactive --no-wait
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
       - name: 📱 Build info
         run: |
-          echo "✅ iOS build spuštěn úspěšně!"
+          echo "✅ Android AAB build spuštěn úspěšně!"
           echo "🔧 Build type: ${{ github.event.inputs.build_type }}"
-          echo "📱 Platform: iOS"
-          echo "⏳ Build běží na pozadí..." 
+          echo "📱 Platform: Android"
+          echo "📦 Output: AAB soubor"
+          echo "⏳ Build běží na pozadí..."
